@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionManager.API", "TransactionManager.API\TransactionManager.API.csproj", "{EFA7E2B6-E14F-4CB1-9B5D-8CC162FF9095}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFA7E2B6-E14F-4CB1-9B5D-8CC162FF9095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA7E2B6-E14F-4CB1-9B5D-8CC162FF9095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA7E2B6-E14F-4CB1-9B5D-8CC162FF9095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA7E2B6-E14F-4CB1-9B5D-8CC162FF9095}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A0DC7BA-56C0-4380-A5E4-5DD590CF110D}
+	EndGlobalSection
+EndGlobal
