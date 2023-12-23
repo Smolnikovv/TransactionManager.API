@@ -6,9 +6,9 @@ namespace TransactionManager.API.Configs
     public class DatabaseContext : DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options):base(options) { }
-        DbSet<Category> Categories { get; set; }
-        DbSet<User> Users { get; set; }
-        DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             CategoriesModelConfigure(modelBuilder);

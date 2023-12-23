@@ -1,6 +1,10 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TransactionManager.API.Commands.Category;
+using TransactionManager.API.Configs;
 using TransactionManager.API.Models.Category;
+using TransactionManager.API.Queries.CategoryQueries;
 
 namespace TransactionManager.API.Controllers
 {
@@ -8,24 +12,27 @@ namespace TransactionManager.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly IMediator _mediatR;
-        public CategoryController(IMediator mediator) 
+        public CategoryController(IMediator mediatR)
         {
-            _mediatR = mediator;
+            _mediatR = mediatR;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            var result = await _mediatR.Send(new GetAllCategoriesQuery());
+            return Ok(result);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute]int id)
         {
-            return Ok();
+            var result = await _mediatR.Send(new GetCategoryByIdQuery(id));
+            return result != null ? Ok(result) : NotFound();
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto)
         {
-            return Ok();
+            var result = await _mediatR.Send(new CreateCategoryCommand(dto));
+            return Created($"Created id {result}", null);
         }
     }
 }

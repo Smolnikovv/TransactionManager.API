@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TransactionManager.API.Commands.Transaction;
+using TransactionManager.API.Entities;
 using TransactionManager.API.Models.Transaction;
+using TransactionManager.API.Queries.TransactionQueries;
 
 namespace TransactionManager.API.Controllers
 {
@@ -15,17 +18,20 @@ namespace TransactionManager.API.Controllers
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetAllByUserId([FromRoute] int userId)
         {
-            return Ok();
+            var result = await _mediator.Send(new GetAllUserTransactionsQuery(userId));
+            return result != null ? Ok(result) : NotFound();
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            return Ok();
+            var result = await _mediator.Send(new GetTransacationByIdQuery(id));
+            return result != null ? Ok(result) : NotFound();
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTransactionDto dto)
         {
-            return Ok();
+            var result = await _mediator.Send(new CreateTransactionCommand(dto));
+            return Created($"Created id {result}", null);
         }
     }
 }
