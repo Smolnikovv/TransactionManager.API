@@ -17,13 +17,13 @@ namespace TransactionManager.API.Handlers.CategoryHandlers
             _context = context;
         }
 
-        public Task<List<CategoryDto>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<List<CategoryDto>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
             var result = _context
                 .Categories
                 .ToList();
 
-            return Task.FromResult(_mapper.Map<List<CategoryDto>>(result));
+            return await Task.FromResult(_mapper.Map<List<CategoryDto>>(result));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using TransactionManager.API.Configs;
 using TransactionManager.API.Models.Transaction;
 using TransactionManager.API.Queries.TransactionQueries;
@@ -17,10 +18,11 @@ namespace TransactionManager.API.Handlers.TransactionHandlers
             _mapper = mapper;
         }
 
-        public Task<List<TransactionDto>>? Handle(GetAllUserTransactionsQuery request, CancellationToken cancellationToken)
+        public Task<List<TransactionDto>> Handle(GetAllUserTransactionsQuery request, CancellationToken cancellationToken)
         {
             var result = _context
                 .Transactions
+                .Include(x => x.Category)
                 .Where(x => x.UserId == request.UserId)
                 .ToList();
 
