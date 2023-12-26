@@ -15,7 +15,7 @@ namespace TransactionManager.API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("{userId}")]
+        [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetAllByUserId([FromRoute] int userId)
         {
             var result = await _mediator.Send(new GetAllUserTransactionsQuery(userId));

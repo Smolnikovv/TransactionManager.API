@@ -17,7 +17,7 @@ namespace TransactionManager.API.Handlers.CategoryHandlers
             _context = context;
         }
 
-        public Task<CategoryDto>? Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
+        public Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             var result = _context
                 .Categories

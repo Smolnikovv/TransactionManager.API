@@ -14,11 +14,15 @@ namespace TransactionManager.API.Configs
         }
         private void CheckConnection()
         {
-            if (!_context.Database.CanConnect())
+            try
+            {
+                UpdateDatabase();
+            }
+            catch
             {
                 throw new Exception("No connection");
             }
-            UpdateDatabase();
+            
         }
         private void UpdateDatabase()
         {
@@ -37,11 +41,12 @@ namespace TransactionManager.API.Configs
             {
                 var categories = GetCategories();
                 var users = GetUsers();
-                var transactions = GetTransactions();
                 _context.Categories.AddRange(categories);
                 _context.SaveChanges();
                 _context.Users.AddRange(users);
                 _context.SaveChanges();
+
+                var transactions = GetTransactions();
                 _context.Transactions.AddRange(transactions);
                 _context.SaveChanges();
             }
@@ -91,52 +96,85 @@ namespace TransactionManager.API.Configs
         }
         private List<Transaction> GetTransactions()
         {
-            return new List<Transaction>()
+            try
+            {
+                int mak = _context
+                    .Users
+                    .FirstOrDefault(x => x.Name.Contains("Makłowicz"))
+                    .Id;
+                int kowal = _context
+                    .Users
+                    .FirstOrDefault(x => x.Name.Contains("Kowalski"))
+                    .Id;
+                int rodow = _context
+                    .Users
+                    .FirstOrDefault(x => x.Name.Contains("Rodowicz"))
+                    .Id;
+
+                int jedz = _context
+                    .Categories
+                    .FirstOrDefault(x => x.Name.Contains("Jedzenie"))
+                    .Id;
+                int finan = _context
+                    .Categories
+                    .FirstOrDefault(x => x.Name.Contains("Finanse"))
+                    .Id;
+                int rozry = _context
+                    .Categories
+                    .FirstOrDefault(x => x.Name.Contains("Jedzenie"))
+                    .Id;
+                return new List<Transaction>()
             {
                 new Transaction
                 {
                     CategoryId = 1,
-                    UserId = 1,
+                    UserId = kowal,
                     Amount = 40,
                     Name = "Restauracja"
                 },
                 new Transaction
                 {
                     CategoryId = 2,
-                    UserId = 1,
+                    UserId = kowal,
                     Amount = 900,
                     Name = "Czynsz"
                 },
                 new Transaction
                 {
                     CategoryId = 3,
-                    UserId = 2,
+                    UserId = mak,
                     Amount = 20,
                     Name = "Kino"
                 },
                 new Transaction
                 {
                     CategoryId = 3,
-                    UserId = 2,
+                    UserId = mak,
                     Amount = 50,
                     Name = "Teatr"
                 },
                 new Transaction
                 {
                     CategoryId = 3,
-                    UserId = 3,
+                    UserId = rodow,
                     Amount = 20,
                     Name = "Koncert"
                 },
                 new Transaction
                 {
                     CategoryId = 1,
-                    UserId = 3,
+                    UserId = rodow,
                     Amount = 60,
                     Name = "Zakupy"
                 }
             };
-        }
+
+            }
+            catch
+            {
+                throw new Exception("seeder error");
+            }
+            }
         private bool CheckIfEmpty()
         {
             if (_context.Categories.Any() || _context.Users.Any() || _context.Transactions.Any()) return false;

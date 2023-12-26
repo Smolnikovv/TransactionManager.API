@@ -17,13 +17,13 @@ namespace TransactionManager.API.Handlers.UserHandlers
             _mapper = mapper;
         }
 
-        public Task<UserDto>? Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<UserDto>? Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var result = _context
                 .Users
                 .FirstOrDefault(x => x.Id == request.Id);
 
-            return result != null ? Task.FromResult(_mapper.Map<UserDto>(result)) : null;
+            return result != null ? await Task.FromResult(_mapper.Map<UserDto>(result)) : null;
 
         }
     }
