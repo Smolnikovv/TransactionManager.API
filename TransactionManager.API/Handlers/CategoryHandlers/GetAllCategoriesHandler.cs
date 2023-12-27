@@ -23,7 +23,7 @@ namespace TransactionManager.API.Handlers.CategoryHandlers
                 .Categories
                 .ToList();
 
-            return await Task.FromResult(_mapper.Map<List<CategoryDto>>(result));
+            return result != null ? await Task.FromResult(_mapper.Map<List<CategoryDto>>(result)) : null;
         }
     }
 }
