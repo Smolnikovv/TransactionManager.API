@@ -19,7 +19,15 @@ builder.Services.AddDbContext<DatabaseContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
 
 
+
+
 var app = builder.Build();
+app.UseCors(options=>
+    options
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+    .AllowAnyHeader()
+);
 
 var scope = app.Services.CreateScope();
 var databaseChecker = scope.ServiceProvider.GetService<DatabaseChecker>();
