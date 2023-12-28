@@ -16,14 +16,14 @@ namespace TransactionManager.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(CreateUserDto dto)
         {
-            var result = await _mediator.Send(new RegisterCommand(dto)); 
+            var result = await _mediator.Send(new RegisterCommand(dto));
             return Ok(result);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             var result = await _mediator.Send(new LoginCommand(dto));
-            return Ok(result);
+            return result != null ? Ok(result) : BadRequest();
         }
     }
 }
