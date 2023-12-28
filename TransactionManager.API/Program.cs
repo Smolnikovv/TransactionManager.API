@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 using TransactionManager.API.Configs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,28 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(ty
 
 builder.Services.AddScoped<DatabaseChecker>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+AuthenticationSettings authenticationSettings = new AuthenticationSettings();
+builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+builder.Services.AddSingleton(authenticationSettings);
+
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = "Bearer";
+    opt.DefaultScheme = "Bearer";
+    opt.DefaultChallengeScheme = "Bearer";
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidIssuer = authenticationSettings.JwtIssuser,
+        ValidAudience = authenticationSettings.JwtIssuser,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+    };
+});
 
 builder.Services.AddDbContext<DatabaseContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection")));
