@@ -7,10 +7,11 @@ using System.Text;
 using TransactionManager.API.Commands.Authorization;
 using TransactionManager.API.Configs;
 using TransactionManager.API.Entities;
+using TransactionManager.API.Models.Authorization;
 
 namespace TransactionManager.API.Handlers.AuthorizationHandlers
 {
-    public class LoginHandler : IRequestHandler<LoginCommand, string>
+    public class LoginHandler : IRequestHandler<LoginCommand, JwtToken>
     {
         private readonly DatabaseContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
@@ -22,17 +23,28 @@ namespace TransactionManager.API.Handlers.AuthorizationHandlers
             _authenticationSettings = authenticationSettings;
         }
 
-        public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<JwtToken> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
+            var res = new JwtToken();
             var user = _context
                 .Users
                 .FirstOrDefault(x => x.Name == request.LoginDto.Name);
 
-            if (user == null) return null;
+            if (user == null)
+            {
+                res.Code = -1;
+                res.Token = "";
+                return res;
+            }
 
             PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(user,user.Password,request.LoginDto.Password);
 
-            if (result == PasswordVerificationResult.Failed) return null;
+            if (result == PasswordVerificationResult.Failed)
+            {
+                res.Code = -1;
+                res.Token = "";
+                return res;
+            }
 
             List<Claim> claims = new List<Claim>
             {
@@ -50,7 +62,9 @@ namespace TransactionManager.API.Handlers.AuthorizationHandlers
                 expires: expires,
                 signingCredentials: cred);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            return await Task.FromResult(tokenHandler.WriteToken(token));
+            res.Code = 1;
+            res.Token = tokenHandler.WriteToken(token);
+            return await Task.FromResult(res);
         }
     }
 }
