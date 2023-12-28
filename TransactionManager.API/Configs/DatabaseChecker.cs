@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TransactionManager.API.Entities;
 
 namespace TransactionManager.API.Configs
@@ -6,9 +7,11 @@ namespace TransactionManager.API.Configs
     public class DatabaseChecker
     {
         private readonly DatabaseContext _context;
-        public DatabaseChecker(DatabaseContext context)
+        private readonly IPasswordHasher<User> _passwordHasher;
+        public DatabaseChecker(DatabaseContext context, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
             CheckConnection();
             SeedDatabase();
         }
@@ -73,25 +76,26 @@ namespace TransactionManager.API.Configs
         }
         private List<User> GetUsers()
         {
+            var user = new User();
             return new List<User>()
             {
                 new User
                 {
                     AccountBalance = 3000,
                     Name = "Jan Kowalski",
-                    Password = "Test123"
+                    Password = _passwordHasher.HashPassword(user,"test123")
                 },
                 new User
                 {
                     AccountBalance = 4000,
                     Name = "Robert Makłowicz",
-                    Password = "123RRR"
+                    Password = _passwordHasher.HashPassword(user,"23123RRRRR")
                 },
                 new User
                 {
                     AccountBalance = 1700,
                     Name = "Maryla Rodowicz",
-                    Password = "ASDfASDf"
+                    Password = _passwordHasher.HashPassword(user,"dkfkdfgsnkfdsgko")
                 }
             };
         }

@@ -22,12 +22,6 @@ namespace TransactionManager.API.Controllers
             var result = await _mediator.Send(new GetUserByIdQuery(id));
             return result != null ? Ok(result) : NotFound();
         }
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
-        {
-            var result = await _mediator.Send(new CreateUserCommand(dto));
-            return Created($"Created id {result}", null);
-        }
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateUserDto dto, [FromRoute] int id)
         {
