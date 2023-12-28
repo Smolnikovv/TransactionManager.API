@@ -19,9 +19,10 @@ namespace TransactionManager.API.Handlers.TransactionHandlers
 
         public Task<int> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
-            var transaction = _mapper.Map<Transaction>(request);
+            var transaction = _mapper.Map<Transaction>(request.CreateTransactionDto);
 
             _context.Transactions.Add(transaction);
+            _context.SaveChanges();
 
             return Task.FromResult(transaction.Id);
         }

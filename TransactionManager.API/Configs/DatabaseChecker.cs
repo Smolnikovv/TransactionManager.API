@@ -33,7 +33,8 @@ namespace TransactionManager.API.Configs
         }
         private bool CheckPendingMigrations()
         {
-            return _context.Database.GetPendingMigrations().Any();
+            var res = _context.Database.GetPendingMigrations().Any();
+            return res;
         }
         private void SeedDatabase()
         {
