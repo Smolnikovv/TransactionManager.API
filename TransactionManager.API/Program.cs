@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
 using TransactionManager.API.Configs;
+using TransactionManager.API.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,7 @@ AuthenticationSettings authenticationSettings = new AuthenticationSettings();
 builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
 
 builder.Services.AddSingleton(authenticationSettings);
+builder.Services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>>();
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -62,7 +65,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
