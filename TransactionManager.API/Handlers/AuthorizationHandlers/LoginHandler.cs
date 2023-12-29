@@ -48,7 +48,7 @@ namespace TransactionManager.API.Handlers.AuthorizationHandlers
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("UserId", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim("AccountBalance",user.AccountBalance.ToString())
             };
