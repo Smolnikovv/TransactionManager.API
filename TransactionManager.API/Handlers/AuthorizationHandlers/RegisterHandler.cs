@@ -17,6 +17,15 @@ namespace TransactionManager.API.Handlers.AuthorizationHandlers
         }
         public async Task<int> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            var checkUser = _context
+                .Users
+                .FirstOrDefault(x => x.Name == request.CreateUserDto.Name);
+
+            if ( checkUser != null )
+            {
+                throw new Exception("Already exist");
+            }
+
             var user = new User()
             {
                 Name = request.CreateUserDto.Name,

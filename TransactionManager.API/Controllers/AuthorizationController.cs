@@ -14,7 +14,7 @@ namespace TransactionManager.API.Controllers
             _mediator = mediator;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register(CreateUserDto dto)
+        public async Task<IActionResult> Register([FromBody] CreateUserDto dto)
         {
             var result = await _mediator.Send(new RegisterCommand(dto));
             return Ok(result);

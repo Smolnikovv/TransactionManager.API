@@ -4,6 +4,6 @@
     {
         public string? Name { get; set; }
         public string? Password { get; set; }
-        public double? AccountBallance { get; set; }
+        public double? AccountBalance { get; set; }
     }
 }

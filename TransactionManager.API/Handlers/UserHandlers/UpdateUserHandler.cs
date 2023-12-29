@@ -24,7 +24,7 @@ namespace TransactionManager.API.Handlers.UserHandlers
 
             user.Name = request.User.Name ?? user.Name;
             user.Password = request.User.Password ?? user.Password;
-            user.AccountBalance = request.User.AccountBallance ?? user.AccountBalance;
+            user.AccountBalance = request.User.AccountBalance ?? user.AccountBalance;
 
             _context.SaveChanges();
 
